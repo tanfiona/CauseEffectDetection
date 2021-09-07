@@ -1,0 +1,24 @@
+# files
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.gz
+*.bcf
+*.xml
+*.xlsx
+*.csv
+*.png
+*.jpeg
+*.jpg
+ *.pyc
+
+# folders
+.vscode/
+.ipynb_checkpoints/
+__pycache__/
+outs/
