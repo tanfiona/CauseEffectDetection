@@ -1,5 +1,6 @@
 # PAIRED - KFOLDS on combined training set
 # Note: Transfer to server on "Default", do not use "Binary"
+# ADD POS
 {
     # EMBED, ADD_FEATS
     sleep 5 &&

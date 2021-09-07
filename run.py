@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" Fine-tuning the library models for named entity recognition on CoNLL-2003 (Bert or Roberta). """
+""" Fine-tuning the library models for named entity recognition on CoNLL-2003. """
 
 
 import logging
@@ -362,61 +362,6 @@ def save_predictions(preds_list, save_folder, mode='test'):
     )
 
 
-def main2():
-    labels = get_labels()
-    label_map: Dict[int, str] = {i: label for i, label in enumerate(labels)}
-    num_labels = len(labels)
-
-    pos_labels = get_pos_labels('data/pos_tags.txt')
-    pos_label_map: Dict[int, str] = {i: label for i, label in enumerate(pos_labels)}
-    num_pos_labels = len(pos_labels)
-
-    # Load pretrained model and tokenizer
-    #
-    # Distributed training:
-    # The .from_pretrained methods guarantee that only one local process can concurrently
-    # download model & vocab.
-    config = AutoConfig.from_pretrained(
-        model_args.config_name if model_args.config_name else model_args.model_name,
-        num_labels=num_labels,
-        id2label=label_map,
-        label2id={label: i for i, label in enumerate(labels)},
-        id2poslabel=pos_label_map,
-        num_pos_labels=num_pos_labels,
-        add_pos=model_args.add_pos,
-        use_bilstm=model_args.use_bilstm,
-        use_graph=model_args.use_graph,
-        graph_purpose=model_args.graph_purpose,
-        use_graphlstm=model_args.use_graphlstm,
-        graph_hidden=model_args.graph_hidden,
-        graph_out=model_args.graph_out,
-        add_feats=model_args.add_feats,
-        transitions_path=f'{data_args.data_dir}/train_transitions.txt',
-        cache_dir=model_args.cache_dir,
-    )
-
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name,
-        cache_dir=model_args.cache_dir,
-        use_fast=model_args.use_fast,
-    )
-
-    train_dataset = (
-        FinDataset(
-            data_dir=data_args.data_dir,
-            tokenizer=tokenizer,
-            labels=get_labels(),
-            model_type=config.model_type,
-            max_seq_length=data_args.max_seq_length,
-            overwrite_cache=data_args.overwrite_cache,
-            mode=Split.train,
-            local_rank=training_args.local_rank,
-        )
-        if training_args.do_train
-        else None
-    )
-    print(train_dataset[0])
-
 
 def main():
     if model_args.folds is None:
@@ -427,7 +372,7 @@ def main():
 
 if __name__ == "__main__":
     """
-    Run in command line
+    Example run in command line
     >>>>
     sudo CUDA_VISIBLE_DEVICES=1 /home/fiona/anaconda3/envs/torchgeom/bin/python3 run.py \
     --data_dir data --labels data/labels.txt --model_name_or_path bert-base-cased \

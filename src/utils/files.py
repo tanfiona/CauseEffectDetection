@@ -36,13 +36,6 @@ def save_json(ddict, json_file_path):
         json.dump(ddict, fp)
 
 
-def save_namedtuple(data, csv_file_path, delimiter=';'):
-    with open(csv_file_path,'w') as out:
-        csv_out=csv.writer(out, delimiter=delimiter)
-        csv_out.writerow(['index', 'text', 'cause', 'effect', 'labels'])
-        for row in data:
-            csv_out.writerow(row)
-
 
 def save_list(data:list, txt_file_path:str):
     with open(txt_file_path, "w") as f:
@@ -78,25 +71,3 @@ def set_seeds(seed):
 
 def set_warnings():
     warnings.simplefilter(action='ignore', category=FutureWarning)
-
-
-def str2bool(v):
-    """
-    Code source: https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
-    """
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
-
-
-def get_device(use_cpu, cuda_device):
-    if torch.cuda.is_available() and not use_cpu:
-        device = torch.device('cuda:'+str(cuda_device))
-    else:
-        device = torch.device("cpu")
-    return device
